@@ -1,0 +1,139 @@
+/* Page Background */
+.auth-page {
+  min-height: calc(100vh -80px);
+  padding: 3rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at top center, #020617 0, #020617 40%, #000 100%);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+/* Glassmorphism Card */
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  margin-top: -6rem;
+  /* margin-bottom: 4rem; */
+  padding: 2.2rem 2.3rem 2.5rem;
+  border-radius: 1.5rem;
+  background: rgba(15, 23, 42, 0.96);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(55, 65, 81, 0.95);
+  text-align: center;
+  color: #f9fafb;
+}
+
+/* Title & Subtitle */
+.auth-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 0.4rem;
+}
+
+.auth-subtitle {
+  font-size: 0.93rem;
+  color: #94a3b8;
+  margin-bottom: 1.8rem;
+}
+
+/* Inputs */
+.auth-fields {
+  display: grid;
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+}
+
+.auth-input {
+  width: 100%;
+  border-radius: 0.85rem;
+  border: 1px solid rgba(55, 65, 81, 0.95);
+  padding: 0.75rem 0.95rem;
+  font-size: 0.9rem;
+  background: rgba(17, 24, 39, 0.96);
+  color: #f9fafb;
+  outline: none;
+  transition: all 0.17s ease;
+}
+
+.auth-input::placeholder {
+  color: #6b7280;
+}
+
+.auth-input:focus {
+  border-color: #818cf8;
+  box-shadow: 0 0 0 2px rgba(129, 140, 248, 0.55);
+}
+
+/* Buttons */
+.auth-btn {
+  width: 100%;
+  border-radius: 999px;
+  border: none;
+  padding: 0.78rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-btn.primary {
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  color: #f9fafb;
+  box-shadow: 0 16px 38px rgba(248, 113, 113, 0.6);
+  margin-bottom: 1rem;
+}
+
+.auth-btn.primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 20px 48px rgba(248, 113, 113, 0.8);
+}
+
+/* Google Button */
+.auth-btn.google {
+  background: rgba(255, 255, 255, 0.98);
+  color: #111827;
+}
+
+.google-icon {
+  height: 18px;
+  margin-right: 0.5rem;
+}
+
+/* Links */
+.auth-links {
+  margin-top: 1rem;
+  font-size: 0.88rem;
+  display: flex;
+  gap: 0.35rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-text {
+  color: #9ca3af;
+}
+
+.auth-link {
+  color: #fb923c;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 1.8rem 1.4rem 2.1rem;
+  }
+}

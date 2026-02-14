@@ -1,0 +1,105 @@
+/* Page Wrapper */
+.s-dashboard-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1rem;
+  background:
+    radial-gradient(circle at top center, rgba(15, 23, 42, 0.88), transparent 60%),
+    radial-gradient(circle at bottom right, rgba(15, 23, 42, 0.95), #020617 75%);
+}
+
+/* Glass Card */
+.s-dashboard-card {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  padding: 2.2rem 2rem;
+  border-radius: 22px;
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 25px 55px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glow */
+.s-dashboard-card::before {
+  content: "";
+  position: absolute;
+  inset: -45%;
+  background:
+    radial-gradient(circle at top left, rgba(96, 165, 250, 0.18), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(251, 146, 60, 0.20), transparent 55%);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.s-dashboard-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 0.4rem;
+}
+
+.s-dashboard-subtitle {
+  font-size: 0.95rem;
+  color: #475569;
+  margin-bottom: 1.6rem;
+}
+
+.s-dashboard-info {
+  font-size: 1rem;
+  color: #0f172a;
+  font-weight: 500;
+  margin-bottom: 0.7rem;
+}
+
+.s-dashboard-label {
+  font-weight: 700;
+  color: #1e293b;
+}
+
+/* Logout Button */
+.s-dashboard-logout-btn {
+  margin-top: 1.4rem;
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.05rem;
+  cursor: pointer;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  box-shadow: 0 12px 26px rgba(239, 68, 68, 0.5);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.s-dashboard-logout-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(239, 68, 68, 0.7);
+}
+
+.s-dashboard-logout-btn:active {
+  transform: scale(0.96);
+}
+
+/* Dark Mode Support */
+body.dark-mode .s-dashboard-card {
+  background: rgba(15, 23, 42, 0.92);
+  border-color: rgba(55, 65, 81, 0.9);
+}
+
+body.dark-mode .s-dashboard-title,
+body.dark-mode .s-dashboard-label,
+body.dark-mode .s-dashboard-info {
+  color: #f8fafc;
+}
+
+body.dark-mode .s-dashboard-subtitle {
+  color: #cbd5e1;
+}

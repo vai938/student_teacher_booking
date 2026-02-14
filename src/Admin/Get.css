@@ -1,0 +1,126 @@
+/* Wrapper */
+.get-wrapper {
+  width: 100%;
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* Glass card container */
+.get-card {
+  width: 100%;
+  max-width: 900px;
+  border-radius: 24px;
+  padding: 2.3rem 2rem 2.6rem;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 22px 55px rgba(15, 23, 42, 0.18);
+  position: relative;
+}
+
+/* Dark mode */
+body.dark-mode .get-card {
+  background: rgba(15, 23, 42, 0.9);
+  border-color: rgba(55, 65, 81, 0.9);
+  box-shadow: 0 26px 75px rgba(0, 0, 0, 0.9);
+}
+
+/* Title */
+.get-title {
+  font-size: 2rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 0.45rem;
+  color: #0f172a;
+}
+
+body.dark-mode .get-title {
+  color: #f9fafb;
+}
+
+/* Subtitle */
+.get-subtitle {
+  font-size: 1rem;
+  text-align: center;
+  color: #6b7280;
+  margin-bottom: 1.7rem;
+}
+
+body.dark-mode .get-subtitle {
+  color: #9ca3af;
+}
+
+/* Table styling */
+.table-container {
+  overflow-x: auto;
+}
+
+.teacher-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.teacher-table th,
+.teacher-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  text-align: left;
+}
+
+.teacher-table th {
+  font-weight: 700;
+  color: #374151;
+}
+
+body.dark-mode .teacher-table th {
+  color: #e5e7eb;
+}
+
+body.dark-mode .teacher-table td {
+  color: #f3f4f6;
+}
+
+.teacher-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Action column */
+.action-col {
+  width: 160px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+}
+
+
+/* Empty state */
+.empty-text {
+  text-align: center;
+  color: #9ca3af;
+  padding: 1.2rem 0;
+}
+
+body.dark-mode .empty-text {
+  color: #6b7280;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .action-col {
+    width: 100px;
+  }
+  
+  .teacher-table th,
+  .teacher-table td {
+    font-size: 0.85rem;
+    padding: 0.7rem;
+  }
+}
