@@ -1,108 +1,186 @@
 import React, { useState, useEffect } from "react";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../Firebase";
-import { Form, Button, Table } from "react-bootstrap";
 import "./SearchTeacher.css";
 
-function SearchTeacher() {
-  const [department, setDepartment] = useState("");
-  const [teachers, setTeachers] = useState([]);
-  const [hasSearched, setHasSearched] = useState(false);
-  const [loading, setLoading] = useState(false);
+function SearchTeacher({ onSelectTeacher }) {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedDept, setSelectedDept] = useState("all");
+  const [allTeachers, setAllTeachers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // keep this page in dark mode
+  // Subscribe to faculty directory in real time
   useEffect(() => {
-    document.body.classList.add("dark-mode");
-    return () => document.body.classList.remove("dark-mode");
-  }, []);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const dept = department.trim();
-    if (!dept) return;
-
-    setLoading(true);
-    setHasSearched(true);
-
     try {
-      const q = query(
+      const unsubscribe = onSnapshot(
         collection(db, "teachers"),
-        where("department", "==", dept)
+        (snapshot) => {
+          const list = [];
+          snapshot.forEach((docSnap) => {
+            list.push({ id: docSnap.id, ...docSnap.data() });
+          });
+          setAllTeachers(list);
+          setLoading(false);
+        },
+        (err) => {
+          console.warn("Could not load teachers in realtime:", err);
+          setLoading(false);
+        }
       );
-
-      const querySnapshot = await getDocs(q);
-
-      const results = [];
-      querySnapshot.forEach((doc) => {
-        results.push(doc.data());
-      });
-
-      setTeachers(results);
-    } catch (err) {
-      console.error("Error fetching teachers:", err);
-      setTeachers([]);
-    } finally {
+      return () => unsubscribe();
+    } catch (e) {
+      console.warn("Error subscribing to teachers:", e);
       setLoading(false);
     }
-  };
+  }, []);
+
+  // Compute unique departments
+  const departments = Array.from(
+    new Set(allTeachers.map((t) => t.department).filter(Boolean))
+  );
+
+  // Filter teachers by search term and selected department
+  const filteredTeachers = allTeachers.filter((t) => {
+    const matchesDept =
+      selectedDept === "all" ||
+      (t.department && t.department.toLowerCase() === selectedDept.toLowerCase());
+
+    if (!searchTerm.trim()) return matchesDept;
+
+    const term = searchTerm.toLowerCase();
+    const nameMatch = t.name && t.name.toLowerCase().includes(term);
+    const deptMatch = t.department && t.department.toLowerCase().includes(term);
+    const subjMatch = t.subject && t.subject.toLowerCase().includes(term);
+
+    return matchesDept && (nameMatch || deptMatch || subjMatch);
+  });
 
   return (
-    <div className="search-page">
-      <section className="search-card">
-        <h1 className="search-title">Find a Teacher</h1>
-        <p className="search-subtitle">
-          Search for teachers by department and view their subjects.
-        </p>
-
-        <Form className="search-form" onSubmit={handleSubmit}>
-          <Form.Group className="search-group" controlId="searchDepartment">
-            <Form.Label>Department</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="e.g. Computer Science"
-              value={department}
-              onChange={(e) => setDepartment(e.target.value)}
-            />
-          </Form.Group>
-
-          <div className="search-actions">
-            <Button className="search-btn" type="submit" disabled={loading}>
-              {loading ? "Searching..." : "Search"}
-            </Button>
-          </div>
-        </Form>
-
-        <div className="search-results">
-          {hasSearched && !loading && teachers.length === 0 && (
-            <p className="search-empty">
-              No teachers found for this department.
-            </p>
-          )}
-
-          {teachers.length > 0 && (
-            <div className="search-table-wrapper">
-              <Table responsive hover className="search-table">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Department</th>
-                    <th>Subject</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {teachers.map((teacher, idx) => (
-                    <tr key={idx}>
-                      <td>{teacher.name}</td>
-                      <td>{teacher.department}</td>
-                      <td>{teacher.subject}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </div>
+    <div className="search-teacher-container">
+      {/* Search & Filter Bar */}
+      <div className="search-control-card">
+        <div className="search-input-wrapper">
+          <span className="search-icon">🔍</span>
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search by faculty name, department, or subject..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          {searchTerm && (
+            <button
+              type="button"
+              className="search-clear-btn"
+              onClick={() => setSearchTerm("")}
+              aria-label="Clear search"
+            >
+              ✕
+            </button>
           )}
         </div>
-      </section>
+
+        {/* Department Filter Chips */}
+        {departments.length > 0 && (
+          <div className="dept-chips-row">
+            <button
+              type="button"
+              className={`dept-chip ${selectedDept === "all" ? "active" : ""}`}
+              onClick={() => setSelectedDept("all")}
+            >
+              All Departments ({allTeachers.length})
+            </button>
+            {departments.map((dept) => {
+              const count = allTeachers.filter((t) => t.department === dept).length;
+              return (
+                <button
+                  key={dept}
+                  type="button"
+                  className={`dept-chip ${selectedDept.toLowerCase() === dept.toLowerCase() ? "active" : ""}`}
+                  onClick={() => setSelectedDept(dept)}
+                >
+                  {dept} ({count})
+                </button>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* Directory Grid */}
+      <div className="directory-results-area">
+        {loading && (
+          <div className="directory-empty-state">
+            <div className="spinner"></div>
+            <p>Loading faculty directory...</p>
+          </div>
+        )}
+
+        {!loading && filteredTeachers.length === 0 && (
+          <div className="directory-empty-state">
+            <div className="empty-icon">📂</div>
+            <h3>No faculty members found</h3>
+            <p>
+              {allTeachers.length === 0
+                ? "No instructors have been added to the system yet. Faculty admin can register teachers in the Admin Portal."
+                : "No instructors matched your current search filters. Try adjusting your keywords."}
+            </p>
+            {(searchTerm || selectedDept !== "all") && (
+              <button
+                type="button"
+                className="btn-reset-filters"
+                onClick={() => {
+                  setSearchTerm("");
+                  setSelectedDept("all");
+                }}
+              >
+                Reset Search Filters
+              </button>
+            )}
+          </div>
+        )}
+
+        {!loading && filteredTeachers.length > 0 && (
+          <div className="faculty-grid">
+            {filteredTeachers.map((teacher, idx) => {
+              const initials = (teacher.name || "T")
+                .split(" ")
+                .filter(Boolean)
+                .map((n) => n[0])
+                .slice(0, 2)
+                .join("")
+                .toUpperCase();
+
+              return (
+                <div key={teacher.id || idx} className="faculty-card">
+                  <div className="faculty-card-header">
+                    <div className="faculty-avatar">{initials}</div>
+                    <div className="faculty-meta">
+                      <h3 className="faculty-name">{teacher.name}</h3>
+                      <span className="faculty-dept">{teacher.department || "Faculty"}</span>
+                    </div>
+                  </div>
+
+                  <div className="faculty-subject-box">
+                    <span className="subject-label">Subject Expertise:</span>
+                    <span className="subject-name">{teacher.subject || "General Consultation"}</span>
+                  </div>
+
+                  <div className="faculty-card-footer">
+                    <button
+                      type="button"
+                      className="btn-book-faculty"
+                      onClick={() => onSelectTeacher && onSelectTeacher(teacher)}
+                    >
+                      Book Consultation →
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

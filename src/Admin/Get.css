@@ -1,126 +1,280 @@
-/* Wrapper */
+/* Admin Faculty Directory */
 .get-wrapper {
-  width: 100%;
-  margin-top: 3rem;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-/* Glass card container */
-.get-card {
-  width: 100%;
-  max-width: 900px;
-  border-radius: 24px;
-  padding: 2.3rem 2rem 2.6rem;
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-  border: 1px solid rgba(226, 232, 240, 0.85);
-  box-shadow: 0 22px 55px rgba(15, 23, 42, 0.18);
+.admin-toolbar-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.admin-toolbar-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-add-faculty-cta {
+  padding: 0.6rem 1.15rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--accent-primary);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.btn-add-faculty-cta:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.admin-search-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.admin-search-box {
   position: relative;
-}
-
-/* Dark mode */
-body.dark-mode .get-card {
-  background: rgba(15, 23, 42, 0.9);
-  border-color: rgba(55, 65, 81, 0.9);
-  box-shadow: 0 26px 75px rgba(0, 0, 0, 0.9);
-}
-
-/* Title */
-.get-title {
-  font-size: 2rem;
-  font-weight: 800;
-  text-align: center;
-  margin-bottom: 0.45rem;
-  color: #0f172a;
-}
-
-body.dark-mode .get-title {
-  color: #f9fafb;
-}
-
-/* Subtitle */
-.get-subtitle {
-  font-size: 1rem;
-  text-align: center;
-  color: #6b7280;
-  margin-bottom: 1.7rem;
-}
-
-body.dark-mode .get-subtitle {
-  color: #9ca3af;
-}
-
-/* Table styling */
-.table-container {
-  overflow-x: auto;
-}
-
-.teacher-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.95rem;
-}
-
-.teacher-table th,
-.teacher-table td {
-  padding: 0.85rem 1rem;
-  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-  text-align: left;
-}
-
-.teacher-table th {
-  font-weight: 700;
-  color: #374151;
-}
-
-body.dark-mode .teacher-table th {
-  color: #e5e7eb;
-}
-
-body.dark-mode .teacher-table td {
-  color: #f3f4f6;
-}
-
-.teacher-table tr:last-child td {
-  border-bottom: none;
-}
-
-/* Action column */
-.action-col {
-  width: 160px;
-}
-
-.actions {
   display: flex;
-  gap: 12px;
-  justify-content: center;
   align-items: center;
+  width: 100%;
+}
+
+.admin-search-box .search-icon {
+  position: absolute;
+  left: 0.85rem;
+  font-size: 0.85rem;
+  opacity: 0.6;
+}
+
+.admin-search-box input {
+  width: 100%;
+  padding: 0.75rem 0.85rem 0.75rem 2.2rem;
+  font-size: 0.9rem;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  outline: none;
+}
+
+.admin-search-box input:focus {
+  border-color: var(--border-focus);
+}
+
+.admin-dept-pills {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.admin-dept-pill {
+  padding: 0.35rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  cursor: pointer;
   white-space: nowrap;
 }
 
+.admin-dept-pill.active {
+  background: var(--accent-primary);
+  color: #ffffff;
+  border-color: var(--accent-primary);
+}
 
-/* Empty state */
-.empty-text {
+/* Admin Table */
+.admin-table-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.admin-faculty-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.admin-faculty-table th {
+  padding: 1rem 1.25rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.admin-faculty-table td {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: middle;
+}
+
+.admin-faculty-table tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-faculty-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.faculty-row-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.faculty-mini-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.78rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.faculty-row-name {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.faculty-row-dept {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.faculty-row-subject {
+  font-size: 0.88rem;
+  color: var(--text-primary);
+}
+
+.admin-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.actions-header {
+  width: 140px;
+}
+
+/* Mobile Faculty Items */
+.mobile-faculty-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.mobile-faculty-item {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.mobile-item-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.mobile-item-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.mobile-item-dept {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.mobile-item-subject {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.mobile-item-subject .label {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.mobile-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* Empty Card */
+.admin-empty-card {
   text-align: center;
-  color: #9ca3af;
-  padding: 1.2rem 0;
+  padding: 3rem 1.5rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-body.dark-mode .empty-text {
-  color: #6b7280;
+.admin-empty-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
 }
 
-/* Responsive */
-@media (max-width: 600px) {
-  .action-col {
-    width: 100px;
+.admin-empty-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  max-width: 480px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .desktop-view-only {
+    display: none;
   }
-  
-  .teacher-table th,
-  .teacher-table td {
-    font-size: 0.85rem;
-    padding: 0.7rem;
+
+  .mobile-view-only {
+    display: flex;
   }
 }

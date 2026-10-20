@@ -18,12 +18,13 @@ function TDashboard() {
 
       if (!docsSnap.empty) {
         const data = docsSnap.docs[0].data();
-        setName(data.name || "");
+        setName(data.name || user.displayName || user.email?.split("@")[0] || "Teacher");
       } else {
-        console.warn("No user document found for uid", user.uid);
+        setName(user.displayName || user.email?.split("@")[0] || "Teacher");
       }
     } catch (err) {
-      console.error("Error fetching teacher user data:", err);
+      console.warn("Could not fetch user profile document:", err);
+      setName(user.displayName || user.email?.split("@")[0] || "Teacher");
     }
   };
 

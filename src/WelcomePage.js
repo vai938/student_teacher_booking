@@ -1,218 +1,162 @@
-import React from 'react';
-import './WelcomePage.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "./Firebase";
+import "./WelcomePage.css";
 
 function WelcomePage() {
-  const [darkMode, setDarkMode] = React.useState(true);
-
-  // Add/remove a body class so navbar also reacts
-  React.useEffect(() => {
-    if (darkMode) {
-      document.body.classList.add('dark-mode');
-    } else {
-      document.body.classList.remove('dark-mode');
-    }
-  }, [darkMode]);
+  const [user] = useAuthState(auth);
 
   return (
-    <div className={`welcome-page ${darkMode ? 'dark' : ''}`}>
-      {/* Dark mode toggle floating button */}
-      <div className="theme-toggle-wrapper">
-        <button
-          className={`theme-toggle ${darkMode ? 'on' : ''}`}
-          type="button"
-          onClick={() => setDarkMode((prev) => !prev)}
-        >
-          <span className="theme-icon">{darkMode ? '🌙' : '☀️'}</span>
-          <span className="theme-label">{darkMode ? 'Dark mode' : 'Light mode'}</span>
-          <span className="theme-pill">
-            <span className="theme-knob" />
-          </span>
-        </button>
-      </div>
-
+    <div className="welcome-container">
       {/* Hero Section */}
-      <section className="hero">
-        <div className="hero-content">
-          <span className="badge">SMART • SIMPLE • FAST</span>
-          <h1>
-            Student–Teacher
-            <span> Booking Platform</span>
-          </h1>
-          <p className="hero-subtitle">
-            Schedule meetings in seconds, avoid long queues, and keep every
-            student–teacher conversation organized in one place.
-          </p>
-
-          <div className="hero-actions">
-            <button
-              className="btn primary"
-              onClick={() => (window.location.href = '/login')}
-            >
-              Get Started
-            </button>
-            <button
-              className="btn ghost"
-              onClick={() => (window.location.href = '/about')}
-            >
-              Learn More
-            </button>
-          </div>
-
-          <div className="hero-meta">
-            <div>
-              <h3>24/7</h3>
-              <p>Accessible anywhere</p>
-            </div>
-            <div>
-              <h3>0</h3>
-              <p>Paperwork needed</p>
-            </div>
-            <div>
-              <h3>Real-time</h3>
-              <p>Notifications &amp; updates</p>
-            </div>
-          </div>
+      <section className="hero-section">
+        <div className="hero-badge">
+          Academic Scheduling Platform
         </div>
-
-        <div className="hero-visual">
-          <div className="card card-main">
-            <h3>Today&apos;s Schedule</h3>
-            <ul>
-              <li>
-                <span className="tag tag-student">Student</span>
-                <div>
-                  <p className="title">Project Discussion</p>
-                  <p className="time">10:30 AM • Dr. Ahmed</p>
-                </div>
-              </li>
-              <li>
-                <span className="tag tag-teacher">Teacher</span>
-                <div>
-                  <p className="title">Exam Doubts</p>
-                  <p className="time">01:00 PM • Ms. Lee</p>
-                </div>
-              </li>
-              <li>
-                <span className="tag tag-online">Online</span>
-                <div>
-                  <p className="title">Career Guidance</p>
-                  <p className="time">04:15 PM • Prof. Kumar</p>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          <div className="card card-pill">
-            <p>“No more waiting outside staff rooms!”</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="features">
-        <h2>Why use the booking system?</h2>
-        <p className="section-subtitle">
-          Designed for universities, colleges, and schools that want a smooth,
-          organized way to manage student–teacher meetings.
+        <h1 className="hero-headline">
+          Seamless student–faculty appointments without the waiting line.
+        </h1>
+        <p className="hero-description">
+          CampusConnect organizes office hours, academic advising, and project reviews
+          into a synchronized, real-time consultation portal.
         </p>
 
-        <div className="feature-grid">
-          <div className="feature-card">
-            <div className="icon">📅</div>
-            <h3>Easy Scheduling</h3>
-            <p>
-              Students can view available slots and book appointments without
-              emails or manual coordination.
-            </p>
-          </div>
+        <div className="hero-cta-group">
+          <Link to={user ? "/student" : "/slogin"} className="cta-btn primary">
+            Book a Consultation
+          </Link>
+          <Link to={user ? "/teacher" : "/tlogin"} className="cta-btn secondary">
+            Teacher Office Hours
+          </Link>
+        </div>
 
-          <div className="feature-card">
-            <div className="icon">⏱️</div>
-            <h3>Time Efficient</h3>
-            <p>
-              Reduce queues and overlapping bookings so teachers can focus on
-              what matters: mentoring and teaching.
-            </p>
+        {/* Quick KPI Bar */}
+        <div className="hero-metrics-strip">
+          <div className="metric-item">
+            <span className="metric-number tabular-nums">100%</span>
+            <span className="metric-label">Real-time sync</span>
           </div>
-
-          <div className="feature-card">
-            <div className="icon">🔔</div>
-            <h3>Smart Reminders</h3>
-            <p>
-              Automatic notifications for upcoming meetings keep everyone on
-              track and informed.
-            </p>
+          <div className="metric-divider" aria-hidden="true"></div>
+          <div className="metric-item">
+            <span className="metric-number tabular-nums">0</span>
+            <span className="metric-label">Paperwork &amp; queues</span>
           </div>
-
-          <div className="feature-card">
-            <div className="icon">🌐</div>
-            <h3>Access Anywhere</h3>
-            <p>
-              Works on laptops, tablets, and phones so students and instructors
-              can manage bookings on the go.
-            </p>
+          <div className="metric-divider" aria-hidden="true"></div>
+          <div className="metric-item">
+            <span className="metric-number tabular-nums">24/7</span>
+            <span className="metric-label">Mobile accessible</span>
           </div>
         </div>
       </section>
 
-      {/* How it works */}
-      <section className="how-it-works">
-        <h2>How it works</h2>
-
-        <div className="steps">
-          <div className="step">
-            <span className="step-number">1</span>
-            <h3>Choose your role</h3>
-            <p>Log in as an Admin, Teacher, or Student using your account.</p>
-          </div>
-          <div className="step">
-            <span className="step-number">2</span>
-            <h3>View available slots</h3>
-            <p>
-              Teachers publish their availability; students browse and pick a
-              convenient time.
-            </p>
-          </div>
-          <div className="step">
-            <span className="step-number">3</span>
-            <h3>Confirm &amp; meet</h3>
-            <p>
-              Both sides receive confirmation and reminders before the
-              appointment.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Call to action */}
-      <section className="bottom-cta">
-        <div className="bottom-card">
-          <h2>Ready to simplify your appointments?</h2>
-          <p>
-            Start using the Student–Teacher Booking Platform today and bring
-            structure to every conversation.
+      {/* Role Selection / Direct Access Cards */}
+      <section className="roles-section">
+        <div className="section-header">
+          <h2 className="section-title">Select Your Academic Portal</h2>
+          <p className="section-subtitle">
+            Choose your role to access your dedicated schedule, appointments, and directory.
           </p>
-          <div className="hero-actions">
-            <button
-              className="btn primary"
-              onClick={() => (window.location.href = '/login')}
-            >
-              Login / Sign Up
-            </button>
-            <button
-              className="btn ghost"
-              onClick={() =>
-                window.scrollTo({ top: 0, behavior: 'smooth' })
-              }
-            >
-              Back to top
-            </button>
+        </div>
+
+        <div className="roles-grid">
+          {/* Student Card */}
+          <div className="role-card">
+            <div className="role-icon">🎓</div>
+            <h3 className="role-card-title">Student Portal</h3>
+            <p className="role-card-desc">
+              Browse faculty directories by department, check subject expertise, and reserve convenient consultation slots with real-time status tracking.
+            </p>
+            <ul className="role-features">
+              <li>Instant department &amp; faculty search</li>
+              <li>Pre-filled consultation requests</li>
+              <li>Real-time appointment status tracker</li>
+            </ul>
+            <Link to={user ? "/student" : "/slogin"} className="role-card-btn">
+              {user ? "Open Student Portal →" : "Sign in as Student →"}
+            </Link>
+          </div>
+
+          {/* Teacher Card */}
+          <div className="role-card highlight">
+            <div className="role-icon">👨‍🏫</div>
+            <h3 className="role-card-title">Teacher Portal</h3>
+            <p className="role-card-desc">
+              Schedule your availability, review incoming student consultation requests, and approve or update session statuses in real time.
+            </p>
+            <ul className="role-features">
+              <li>Manage office hours &amp; schedule slots</li>
+              <li>Approve, decline, or complete bookings</li>
+              <li>Live incoming appointment updates</li>
+            </ul>
+            <Link to={user ? "/teacher" : "/tlogin"} className="role-card-btn primary">
+              {user ? "Open Teacher Portal →" : "Sign in as Teacher →"}
+            </Link>
+          </div>
+
+          {/* Admin Card */}
+          <div className="role-card">
+            <div className="role-icon">🏛️</div>
+            <h3 className="role-card-title">Faculty Admin</h3>
+            <p className="role-card-desc">
+              Maintain institutional faculty records, manage departmental instructors, and ensure up-to-date course and subject assignments.
+            </p>
+            <ul className="role-features">
+              <li>Add and update faculty profiles</li>
+              <li>Organize departmental subjects</li>
+              <li>Synchronized institutional directory</li>
+            </ul>
+            <Link to={user ? "/page" : "/login"} className="role-card-btn">
+              {user ? "Open Admin Console →" : "Admin Sign In →"}
+            </Link>
           </div>
         </div>
       </section>
 
-      <footer className="footer">
-        <p>© {new Date().getFullYear()} Student–Teacher Booking System</p>
+      {/* Workflow Step Demonstration */}
+      <section className="workflow-section">
+        <div className="section-header">
+          <h2 className="section-title">How It Works</h2>
+          <p className="section-subtitle">
+            A frictionless three-step process built for modern academic schedules.
+          </p>
+        </div>
+
+        <div className="workflow-steps">
+          <div className="workflow-step">
+            <div className="step-badge">1</div>
+            <h3 className="step-title">Discover Faculty</h3>
+            <p className="step-desc">
+              Search by department or subject to locate the right instructor or advisor for your academic needs.
+            </p>
+          </div>
+          <div className="workflow-step">
+            <div className="step-badge">2</div>
+            <h3 className="step-title">Choose Preferred Time</h3>
+            <p className="step-desc">
+              Select an available date and time slot, specify your discussion topic, and submit with one click.
+            </p>
+          </div>
+          <div className="workflow-step">
+            <div className="step-badge">3</div>
+            <h3 className="step-title">Live Confirmation</h3>
+            <p className="step-desc">
+              The teacher reviews the consultation request and updates the status from Pending to Approved in real time.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="welcome-footer">
+        <div className="footer-content">
+          <div className="footer-brand">
+            <span>🎓</span> CampusConnect Academic Platform
+          </div>
+          <div className="footer-copyright">
+            © {new Date().getFullYear()} CampusConnect. All rights reserved.
+          </div>
+        </div>
       </footer>
     </div>
   );

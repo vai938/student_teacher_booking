@@ -2,102 +2,160 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   auth,
-  signInWithEmailAndPassword,
+  logInWithEmailAndPassword1,
   signInWithGoogle,
 } from "../Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import "./TLogin.css";
+import "../Student/SLogin.css"; // Reuse cohesive auth styles
 
 function TLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, loading, error] = useAuthState(auth);
-  const [darkMode, setDarkMode] = useState(true);
+  const [user, loading, authError] = useAuthState(auth);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
 
-  // redirect if already logged in
   useEffect(() => {
     if (loading) return;
     if (user) navigate("/teacher");
   }, [user, loading, navigate]);
 
-  // initialise theme from body (if coming from landing in dark mode)
-  useEffect(() => {
-    const hasDark = document.body.classList.contains("dark-mode");
-    setDarkMode(hasDark);
-  }, []);
-
-  // sync body class with local state
-  useEffect(() => {
-    if (darkMode) {
-      document.body.classList.add("dark-mode");
-    } else {
-      document.body.classList.remove("dark-mode");
+  const handleEmailLogin = async (e) => {
+    e.preventDefault();
+    if (!email || !password) {
+      setErrorMsg("Please enter your instructor email and password.");
+      return;
     }
-  }, [darkMode]);
+    setErrorMsg("");
+    setIsSubmitting(true);
+    try {
+      const res = await logInWithEmailAndPassword1(email, password);
+      if (res?.user) {
+        navigate("/teacher");
+      }
+    } catch (err) {
+      setErrorMsg(err.message || "Failed to sign in.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
-  const handleEmailLogin = () => {
-    if (!email || !password) return;
-    signInWithEmailAndPassword(auth, email, password);
+  const handleGoogleSignIn = async () => {
+    setErrorMsg("");
+    try {
+      const user = await signInWithGoogle();
+      if (user) {
+        navigate("/teacher");
+      }
+    } catch (err) {
+      setErrorMsg(err.message || "Google sign in failed.");
+    }
   };
 
   return (
-    <div className={`auth-page ${darkMode ? "dark" : ""}`}>
-
+    <div className="auth-page">
       <div className="auth-card">
-        <h2 className="auth-title">Teacher Login</h2>
+        {/* Role Switcher Tabs */}
+        <div className="auth-role-tabs">
+          <Link to="/slogin" className="auth-role-tab">
+            Student
+          </Link>
+          <Link to="/tlogin" className="auth-role-tab active">
+            Teacher
+          </Link>
+          <Link to="/login" className="auth-role-tab">
+            Admin
+          </Link>
+        </div>
+
+        <h2 className="auth-title">Teacher Portal Login</h2>
         <p className="auth-subtitle">
-          Sign in to manage your availability and student appointments.
+          Sign in to manage your availability slots and review student consultation requests.
         </p>
 
-        {error && (
+        {(errorMsg || authError) && (
           <div className="auth-error">
-            {error.message || "Something went wrong. Please try again."}
+            {errorMsg || authError?.message || "Something went wrong. Please try again."}
           </div>
         )}
 
-        <div className="auth-fields">
-          <input
-            type="email"
-            className="auth-input"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="E-mail address"
-          />
-          <input
-            type="password"
-            className="auth-input"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-          />
-        </div>
-
-        <button className="auth-btn primary" onClick={handleEmailLogin}>
-          Login
+        <button
+          type="button"
+          className="auth-btn-google"
+          onClick={handleGoogleSignIn}
+        >
+          <svg className="google-icon-svg" viewBox="0 0 24 24" width="18" height="18">
+            <path
+              fill="#4285F4"
+              d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+            />
+            <path
+              fill="#34A853"
+              d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+            />
+            <path
+              fill="#FBBC05"
+              d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+            />
+            <path
+              fill="#EA4335"
+              d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+            />
+          </svg>
+          <span>Continue with Google</span>
         </button>
 
         <div className="auth-divider">
-          <span>or</span>
+          <span>or sign in with email</span>
         </div>
 
-        <button className="auth-btn google" onClick={signInWithGoogle}>
-          <span className="google-icon">G</span>
-          <span>Login with Google</span>
-        </button>
+        <form onSubmit={handleEmailLogin} className="auth-fields">
+          <div className="auth-input-group">
+            <label htmlFor="t-email">Instructor Email</label>
+            <input
+              id="t-email"
+              type="email"
+              className="auth-input"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="faculty@university.edu"
+              required
+            />
+          </div>
 
-        <div className="auth-links">
-          <Link to="/treset" className="auth-link">
-            Forgot password?
+          <div className="auth-input-group">
+            <div className="label-with-link">
+              <label htmlFor="t-password">Password</label>
+              <Link to="/treset" className="auth-sub-link">
+                Forgot password?
+              </Link>
+            </div>
+            <input
+              id="t-password"
+              type="password"
+              className="auth-input"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="auth-btn-submit"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Signing in..." : "Sign in as Teacher →"}
+          </button>
+        </form>
+
+        <div className="auth-card-footer">
+          <span className="auth-text">New instructor on platform? </span>
+          <Link to="/tregister" className="auth-link">
+            Create teacher account
           </Link>
-          <span className="auth-link-separator">•</span>
-          <span className="auth-text">
-            Don&apos;t have an account?{" "}
-            <Link to="/tregister" className="auth-link">
-              Register
-            </Link>{" "}
-            now.
-          </span>
         </div>
       </div>
     </div>

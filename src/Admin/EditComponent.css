@@ -1,112 +1,122 @@
-/* Center wrapper */
-.edit-wrapper {
+/* Edit Component Modal */
+.btn-edit-trigger {
+  padding: 0.3rem 0.65rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-edit-trigger:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.modal-backdrop-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
+  align-items: center;
   justify-content: center;
-  margin-top: 2.5rem;
-  padding: 0 1rem;
+  padding: 1rem;
+  animation: fadeIn 0.15s ease-out;
 }
 
-/* Glass card */
-.edit-card {
+.modal-dialog-card {
   width: 100%;
-  max-width: 620px;
-  border-radius: 24px;
-  padding: 2rem 2.2rem 2.4rem;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-  border: 1px solid rgba(226, 232, 240, 0.85);
-  box-shadow: 0 22px 55px rgba(15, 23, 42, 0.18);
-  position: relative;
+  max-width: 480px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  animation: scaleUp 0.15s ease-out;
 }
 
-/* Dark mode */
-body.dark-mode .edit-card {
-  background: rgba(15, 23, 42, 0.92);
-  border-color: rgba(55, 65, 81, 0.9);
-  box-shadow: 0 26px 75px rgba(0, 0, 0, 0.9);
+.modal-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
 }
 
-/* Title */
-.edit-title {
-  text-align: center;
-  font-size: 1.45rem;
-  font-weight: 800;
-  margin-bottom: 1.4rem;
-  color: #0f172a;
+.modal-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
 }
 
-body.dark-mode .edit-title {
-  color: #f9fafb;
+.btn-modal-close {
+  background: transparent;
+  border: none;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  cursor: pointer;
 }
 
-/* Form layout */
-.edit-form {
+.btn-modal-close:hover {
+  color: var(--text-primary);
+}
+
+.modal-edit-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.15rem;
 }
 
-/* Labels */
-.edit-group label {
-  font-weight: 600;
-  font-size: 0.9rem;
-  color: #374151;
-}
-
-body.dark-mode .edit-group label {
-  color: #e5e7eb;
-}
-
-/* Inputs */
-.edit-group .form-control {
-  border-radius: 14px;
-  padding: 0.7rem 0.9rem;
-  border: 1px solid rgba(209, 213, 219, 0.9);
-  background: rgba(248, 250, 252, 0.96);
-  transition: all 0.18s ease;
-}
-
-.edit-group .form-control:focus {
-  border-color: rgba(99, 102, 241, 0.9);
-  box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.7);
-  background: #ffffff;
-}
-
-body.dark-mode .edit-group .form-control {
-  background: rgba(17, 24, 39, 0.95);
-  border-color: rgba(55, 65, 81, 0.85);
-  color: #f3f4f6;
-}
-
-/* Button wrapper */
-.edit-actions {
+.modal-actions-row {
   display: flex;
-  justify-content: center;
-  margin-top: 1.1rem;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
 }
 
-/* Gradient pill button */
-.edit-btn {
-  border-radius: 999px !important;
-  padding: 0.7rem 2rem !important;
-  font-weight: 600 !important;
-  font-size: 0.95rem !important;
-  border: none !important;
-  background: linear-gradient(135deg, #ef4444, #f97316) !important;
-  color: #fff !important;
-  box-shadow: 0 14px 34px rgba(248, 113, 113, 0.45);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+.btn-modal-cancel {
+  padding: 0.55rem 1rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
 }
 
-.edit-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 18px 42px rgba(248, 113, 113, 0.7);
+.btn-modal-cancel:hover {
+  background: rgba(255, 255, 255, 0.05);
 }
 
-/* Mobile */
-@media (max-width: 480px) {
-  .edit-card {
-    padding: 1.6rem 1.4rem 2rem;
-  }
+.btn-modal-save {
+  padding: 0.55rem 1.15rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--accent-primary);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.btn-modal-save:hover {
+  background: var(--accent-hover);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }

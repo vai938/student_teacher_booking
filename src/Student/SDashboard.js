@@ -18,10 +18,10 @@ function Dashboard() {
       );
       const docs = await getDocs(q);
       const data = docs.docs[0]?.data();
-      setName(data?.name || "");
+      setName(data?.name || user?.displayName || user?.email?.split("@")[0] || "Student");
     } catch (err) {
-      console.error(err);
-      alert("An error occurred while fetching user data");
+      console.warn("Could not fetch user profile document:", err);
+      setName(user?.displayName || user?.email?.split("@")[0] || "Student");
     }
   };
 

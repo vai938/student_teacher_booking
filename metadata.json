@@ -1,0 +1,8 @@
+{
+  "name": "Student Teacher Booking",
+  "description": "Student-Teacher appointment booking and management portal.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

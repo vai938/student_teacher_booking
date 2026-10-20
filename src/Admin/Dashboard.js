@@ -18,20 +18,20 @@ function Dashboard() {
 
       if (!docsSnap.empty) {
         const data = docsSnap.docs[0].data();
-        setName(data.name || "");
+        setName(data.name || user.displayName || user.email?.split("@")[0] || "Admin");
       } else {
-        console.warn("No user document found for uid", user.uid);
+        setName(user.displayName || user.email?.split("@")[0] || "Admin");
       }
     } catch (err) {
-      console.error("Error while fetching user data:", err);
-      // Optional: toast / alert if you want
+      console.warn("Could not fetch user profile document:", err);
+      setName(user.displayName || user.email?.split("@")[0] || "Admin");
     }
   };
 
   useEffect(() => {
     if (loading) return;
     if (!user) {
-      navigate("/Login"); // keep your existing route
+      navigate("/login");
       return;
     }
     fetchUserName();

@@ -2,12 +2,11 @@ import React from "react";
 import { db } from "../Firebase";
 import { doc, deleteDoc } from "firebase/firestore";
 import "./DeleteComponent.css";
-import Button from "react-bootstrap/Button";
 
 function DeleteComponent({ id }) {
   const handleDelete = async () => {
     const confirmDelete = window.confirm(
-      "Are you sure you want to delete this teacher?"
+      "Are you sure you want to remove this faculty record from the directory?"
     );
 
     if (!confirmDelete) return;
@@ -21,13 +20,14 @@ function DeleteComponent({ id }) {
   };
 
   return (
-    <Button
-  size="sm"
-  variant="danger"
-  onClick={handleDelete}
->
-  Delete
-</Button>
+    <button
+      type="button"
+      className="btn-delete-faculty"
+      onClick={handleDelete}
+      title="Delete faculty record"
+    >
+      Delete
+    </button>
   );
 }
 

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { db } from "../Firebase";
 import { doc, updateDoc } from "firebase/firestore";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import "./EditComponent.css";
 
 function EditComponent({ id, name, department, subject }) {
@@ -10,79 +8,106 @@ function EditComponent({ id, name, department, subject }) {
   const [editedName, setEditedName] = useState(name);
   const [editedDepartment, setEditedDepartment] = useState(department);
   const [editedSubject, setEditedSubject] = useState(subject);
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSaving(true);
 
     try {
       await updateDoc(doc(db, "teachers", id), {
-        name: editedName,
-        department: editedDepartment,
-        subject: editedSubject,
+        name: editedName.trim(),
+        department: editedDepartment.trim(),
+        subject: editedSubject.trim(),
       });
-
       setShow(false);
     } catch (error) {
       console.error("Error updating teacher:", error);
       alert(error.message);
+    } finally {
+      setIsSaving(false);
     }
   };
 
   return (
     <>
-      {/* Edit Button */}
-      <Button size="sm" onClick={() => setShow(true)}>
+      <button
+        type="button"
+        className="btn-edit-trigger"
+        onClick={() => setShow(true)}
+      >
         Edit
-      </Button>
+      </button>
 
-      {/* Edit Modal / Panel */}
       {show && (
-        <div className="edit-wrapper">
-          <section className="edit-card">
-            <h2 className="edit-title">Update Teacher</h2>
+        <div className="modal-backdrop-overlay" onClick={() => setShow(false)}>
+          <div
+            className="modal-dialog-card"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="modal-card-header">
+              <h3 className="modal-card-title">Update Faculty Record</h3>
+              <button
+                type="button"
+                className="btn-modal-close"
+                onClick={() => setShow(false)}
+              >
+                ✕
+              </button>
+            </div>
 
-            <Form className="edit-form" onSubmit={handleSubmit}>
-              <Form.Group className="edit-group">
-                <Form.Label>Name</Form.Label>
-                <Form.Control
+            <form onSubmit={handleSubmit} className="modal-edit-form">
+              <div className="form-field">
+                <label htmlFor={`edit-name-${id}`}>Faculty Name *</label>
+                <input
+                  id={`edit-name-${id}`}
                   type="text"
                   value={editedName}
                   onChange={(e) => setEditedName(e.target.value)}
+                  required
                 />
-              </Form.Group>
+              </div>
 
-              <Form.Group className="edit-group">
-                <Form.Label>Department</Form.Label>
-                <Form.Control
+              <div className="form-field">
+                <label htmlFor={`edit-dept-${id}`}>Department *</label>
+                <input
+                  id={`edit-dept-${id}`}
                   type="text"
                   value={editedDepartment}
                   onChange={(e) => setEditedDepartment(e.target.value)}
+                  required
                 />
-              </Form.Group>
+              </div>
 
-              <Form.Group className="edit-group">
-                <Form.Label>Subject</Form.Label>
-                <Form.Control
+              <div className="form-field">
+                <label htmlFor={`edit-subj-${id}`}>Course / Subject *</label>
+                <input
+                  id={`edit-subj-${id}`}
                   type="text"
                   value={editedSubject}
                   onChange={(e) => setEditedSubject(e.target.value)}
+                  required
                 />
-              </Form.Group>
+              </div>
 
-              <div className="edit-actions">
-                <Button type="submit" className="edit-btn">
-                  Save Changes
-                </Button>
-                <Button
-                  variant="secondary"
+              <div className="modal-actions-row">
+                <button
+                  type="button"
+                  className="btn-modal-cancel"
                   onClick={() => setShow(false)}
-                  className="edit-btn"
                 >
                   Cancel
-                </Button>
+                </button>
+                <button
+                  type="submit"
+                  className="btn-modal-save"
+                  disabled={isSaving}
+                >
+                  {isSaving ? "Saving..." : "Save Changes"}
+                </button>
               </div>
-            </Form>
-          </section>
+            </form>
+          </div>
         </div>
       )}
     </>

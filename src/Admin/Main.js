@@ -1,93 +1,108 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { db } from "../Firebase";
-import { collection, addDoc } from "firebase/firestore";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
 import "./Main.css";
 
-function Main() {
+function Main({ onAdded }) {
   const [name, setName] = useState("");
   const [department, setDepartment] = useState("");
   const [subject, setSubject] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [feedback, setFeedback] = useState("");
 
-  // Force dark mode while this component is mounted
-  useEffect(() => {
-    document.body.classList.add("dark-mode");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    // Clean up when leaving admin page
-    return () => {
-      document.body.classList.remove("dark-mode");
-    };
-  }, []);
+    if (!name.trim() || !department.trim() || !subject.trim()) {
+      setFeedback("Please fill in the instructor's name, department, and course subject.");
+      return;
+    }
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+    setIsSubmitting(true);
+    setFeedback("");
 
-  try {
-    await addDoc(collection(db, "teachers"), {
-      name,
-      department,
-      subject,
-      createdAt: new Date(),
-    });
+    try {
+      await addDoc(collection(db, "teachers"), {
+        name: name.trim(),
+        department: department.trim(),
+        subject: subject.trim(),
+        createdAt: Timestamp.now(),
+      });
 
-    setName("");
-    setDepartment("");
-    setSubject("");
-    alert("Teacher added successfully");
-  } catch (error) {
-    console.error("Error adding teacher:", error);
-    alert(error.message);
-  }
-};
-
+      setName("");
+      setDepartment("");
+      setSubject("");
+      if (onAdded) {
+        onAdded();
+      }
+    } catch (error) {
+      console.error("Error adding teacher:", error);
+      setFeedback(error.message || "Failed to register faculty member.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="main-wrapper">
-      <section className="main-card">
-        <h1 className="main-title">Add Teacher</h1>
+      <div className="main-card">
+        <h2 className="main-title">Register New Faculty Member</h2>
         <p className="main-subtitle">
-          Quickly add a new teacher with their department and subject.
+          Add an instructor to the institutional directory so students can discover and book consultations.
         </p>
 
-        <Form className="main-form" onSubmit={handleSubmit}>
-          <Form.Group controlId="formBasicName" className="main-group">
-            <Form.Label>Name</Form.Label>
-            <Form.Control
+        {feedback && <div className="form-feedback-alert">{feedback}</div>}
+
+        <form className="add-teacher-form" onSubmit={handleSubmit}>
+          <div className="form-field">
+            <label htmlFor="teacher-full-name">Faculty Full Name *</label>
+            <input
+              id="teacher-full-name"
               type="text"
-              placeholder="Enter name"
+              placeholder="e.g. Dr. Robert Chen or Prof. Sarah Miller"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              required
             />
-          </Form.Group>
-
-          <Form.Group controlId="formBasicDepartment" className="main-group">
-            <Form.Label>Department</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter department"
-              value={department}
-              onChange={(e) => setDepartment(e.target.value)}
-            />
-          </Form.Group>
-
-          <Form.Group controlId="formBasicSubject" className="main-group">
-            <Form.Label>Subject</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter subject"
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-            />
-          </Form.Group>
-
-          <div className="main-actions">
-            <Button className="main-btn" type="submit">
-              Upload
-            </Button>
           </div>
-        </Form>
-      </section>
+
+          <div className="form-grid-2">
+            <div className="form-field">
+              <label htmlFor="teacher-department-name">Academic Department *</label>
+              <input
+                id="teacher-department-name"
+                type="text"
+                placeholder="e.g. Computer Science &amp; Engineering"
+                value={department}
+                onChange={(e) => setDepartment(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="form-field">
+              <label htmlFor="teacher-subject-name">Subject / Expertise Area *</label>
+              <input
+                id="teacher-subject-name"
+                type="text"
+                placeholder="e.g. Algorithms, Machine Learning"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+
+          <div className="form-submit-row">
+            <button
+              type="submit"
+              className="btn-submit-consultation"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Registering Faculty..." : "Add to Directory →"}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

@@ -1,143 +1,412 @@
-/* Page wrapper */
-.book-wrapper {
-  width: 100%;
-  padding: 2.5rem 1.5rem 3rem;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-/* Glassmorphic card */
-.book-card {
-  width: 100%;
-  max-width: 960px;
-  border-radius: 24px;
-  padding: 2.3rem 2.4rem 2.6rem;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  box-shadow: 0 26px 78px rgba(15, 23, 42, 0.22);
-  position: relative;
-  overflow: hidden;
-}
-
-/* glowing gradients */
-.book-card::before {
-  content: "";
-  position: absolute;
-  inset: -40%;
-  background:
-    radial-gradient(circle at top left, rgba(129, 140, 248, 0.18), transparent 55%),
-    radial-gradient(circle at bottom right, rgba(248, 113, 113, 0.18), transparent 55%);
-  opacity: 0.85;
-  pointer-events: none;
-}
-
-.book-card > * {
-  position: relative;
-}
-
-/* Dark Mode */
-body.dark-mode .book-card {
-  background: rgba(15, 23, 42, 0.96);
-  border-color: rgba(55, 65, 81, 0.95);
-  box-shadow: 0 32px 100px rgba(0, 0, 0, 0.9);
-}
-
-body.dark-mode .book-card::before {
-  background:
-    radial-gradient(circle at top left, rgba(59, 130, 246, 0.3), transparent 55%),
-    radial-gradient(circle at bottom right, rgba(248, 113, 113, 0.32), transparent 55%);
-}
-
-/* Title */
-.book-title {
-  text-align: center;
-  font-size: 2rem;
-  font-weight: 800;
-  margin-bottom: 0.4rem;
-  color: #0f172a;
-}
-
-body.dark-mode .book-title {
-  color: #f9fafb;
-}
-
-/* Subtitle */
-.book-subtitle {
-  text-align: center;
-  font-size: 1rem;
-  color: #6b7280;
-  margin-bottom: 2rem;
-}
-
-body.dark-mode .book-subtitle {
-  color: #9ca3af;
-}
-
-/* Form styling */
-.book-form {
+/* Book Appointment & Consultation Management */
+.booking-form-container,
+.appointments-management-area {
   display: flex;
   flex-direction: column;
-  gap: 1.1rem;
+  gap: 1.5rem;
 }
 
-.book-group label {
-  font-weight: 600;
-  font-size: 1.2rem;
-  margin-right: 1.5rem;
-  color: #374151;
+.booking-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem 2rem;
+  max-width: 840px;
+  margin: 0 auto;
+  width: 100%;
 }
 
-body.dark-mode .book-group label {
-  color: #e5e7eb;
+.booking-card-title {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.35rem;
 }
 
-.book-group .form-control {
-  border-radius: 14px;
-  padding: 0.75rem;
-  border: 1px solid rgba(209, 213, 219, 0.95);
-  background: rgba(248, 250, 252, 1);
+.booking-card-subtitle {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  margin: 0 0 1.5rem;
 }
 
-body.dark-mode .book-group .form-control {
-  background: rgba(17, 24, 39, 0.98);
-  border-color: rgba(55, 65, 81, 0.95);
-  color: #f9fafb;
-}
-
-/* Button */
-.book-actions {
+/* Selected Teacher Banner */
+.selected-teacher-banner {
   display: flex;
-  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.selected-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.selected-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  letter-spacing: 0.04em;
+}
+
+.selected-info strong {
+  font-size: 1.05rem;
+  color: var(--text-primary);
+}
+
+.selected-sub {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.btn-clear-selection {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.btn-clear-selection:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Form Styles */
+.consultation-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.form-field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  padding: 0.75rem 0.95rem;
+  font-size: 0.92rem;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  background: var(--bg-canvas);
+}
+
+.form-field textarea {
+  resize: vertical;
+}
+
+.form-feedback-alert {
+  padding: 0.75rem 1rem;
+  background: var(--danger-bg);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: var(--radius-sm);
+  color: #fca5a5;
+  font-size: 0.88rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-submit-row {
   margin-top: 0.5rem;
 }
 
-.book-btn {
-  border-radius: 999px;
-  border: none;
-  padding: 0.75rem 2rem;
+.btn-submit-consultation {
+  width: 100%;
+  padding: 0.85rem 1.5rem;
   font-size: 1rem;
   font-weight: 600;
-  background: linear-gradient(135deg, #ef4444, #f97316);
-  color: white;
-  box-shadow: 0 18px 50px rgba(248, 113, 113, 0.6);
-  transition: 0.2s ease;
+  color: #ffffff;
+  background: var(--accent-primary);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
 }
 
-.book-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 24px 60px rgba(248, 113, 113, 0.8);
+.btn-submit-consultation:hover:not(:disabled) {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
 }
 
-/* Mobile responsiveness */
-@media (max-width: 640px) {
-  .book-card {
-    padding: 1.8rem 1.3rem 2.2rem;
+.btn-submit-consultation:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Appointments Management Area */
+.section-title-bar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-bottom: 0.5rem;
+}
+
+.area-title {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.25rem;
+}
+
+.area-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.status-filter-pills {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-sm);
+  padding: 0.25rem;
+}
+
+.filter-btn {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.filter-btn:hover {
+  color: var(--text-primary);
+}
+
+.filter-btn.active {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Appointment Cards */
+.appointments-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.appointment-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  display: grid;
+  grid-template-columns: 140px 1fr auto;
+  gap: 1.5rem;
+  align-items: center;
+  transition: border-color 0.15s ease;
+}
+
+.appointment-card:hover {
+  border-color: rgba(99, 102, 241, 0.4);
+}
+
+.appt-date-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding-right: 1.25rem;
+  border-right: 1px solid var(--border-subtle);
+}
+
+.appt-date-text {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.appt-time-text {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.appt-details-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.appt-top-line {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.appt-instructor {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.status-pill {
+  padding: 0.2rem 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 999px;
+  text-transform: capitalize;
+}
+
+.status-pill.pending {
+  background: var(--warning-bg);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.status-pill.approved {
+  background: var(--success-bg);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.status-pill.completed {
+  background: rgba(99, 102, 241, 0.15);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.status-pill.rejected {
+  background: var(--danger-bg);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.appt-dept-line {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.appt-subject {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.appt-reason-text {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  margin: 0;
+  font-style: italic;
+}
+
+.btn-cancel-appt {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fca5a5;
+  background: transparent;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-cancel-appt:hover {
+  background: var(--danger-bg);
+  border-color: var(--danger);
+  color: #ffffff;
+}
+
+.appointments-empty-box {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-action-primary {
+  margin-top: 1rem;
+  padding: 0.65rem 1.35rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: var(--accent-primary);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.btn-action-primary:hover {
+  background: var(--accent-hover);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .form-grid-2 {
+    grid-template-columns: 1fr;
   }
 
-  .book-title {
-    font-size: 1.5rem;
+  .booking-card {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .appointment-card {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .appt-date-block {
+    flex-direction: row;
+    gap: 0.75rem;
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+    padding-right: 0;
+    padding-bottom: 0.75rem;
+  }
+
+  .appt-actions-block {
+    display: flex;
+    justify-content: flex-end;
   }
 }
